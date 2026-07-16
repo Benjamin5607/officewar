@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#05060a" />
+    <title data-en="Office Puzzle">서류 대소동 · Office Puzzle</title>
+    <link rel="stylesheet" href="../../shared/retro.css" />
+    <style>
+      #app {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 56px 12px 24px;
+      }
+      canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        background: #06121c;
+        border: 4px solid #000;
+        box-shadow: inset 0 0 0 4px var(--border);
+        touch-action: none;
+      }
+      h1 {
+        font-family: "Press Start 2P", monospace;
+        font-size: 16px;
+        color: var(--amber);
+        text-align: center;
+      }
+      .menu {
+        display: grid;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .menu .pixel-btn {
+        text-align: left;
+      }
+      .bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Press Start 2P", monospace;
+        font-size: 10px;
+        color: var(--cyan);
+        margin: 8px 2px;
+      }
+      .quiz-choices {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .q-text {
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--ink);
+        min-height: 60px;
+      }
+      .msg {
+        text-align: center;
+        font-size: 13px;
+        color: var(--green);
+        min-height: 20px;
+        margin-top: 10px;
+      }
+      #sort-controls {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+      }
+      #sort-controls .pixel-btn {
+        font-size: 20px;
+        padding: 14px 0;
+        text-align: center;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+    </style>
+  </head>
+  <body class="crt">
+    <a class="pixel-btn ghost arcade-back" href="../../index.html" data-en="◀ ARCADE">◀ 오락실</a>
+    <div id="app">
+      <h1 data-en="📁 PAPER PANIC">📁 서류 대소동</h1>
+
+      <div id="screen-menu">
+        <p class="q-text" style="text-align: center" data-en="Lunch break, and Manager Kim dumped a 3-piece chore set on you.<br />What first?">
+          점심시간, 김부장이 던진 잡무 3종 세트.<br />뭐부터 처리할까?
+        </p>
+        <div class="menu">
+          <button class="pixel-btn" data-go="sort" data-en="1. Doc Popper">1. 서류 터뜨리기</button>
+          <button class="pixel-btn alt" data-go="diff" data-en="2. Spot the difference (23 stages)">2. 틀린 그림 찾기 (23단계)</button>
+          <button class="pixel-btn" data-go="quiz" data-en="3. Office nonsense quiz">3. 오피스 넌센스 퀴즈</button>
+        </div>
+      </div>
+
+      <div id="screen-sort" class="hidden">
+        <div class="bar"><span id="sort-info">점수 0</span><span id="sort-timer">Lv 1</span></div>
+        <canvas id="sort-canvas" width="480" height="520"></canvas>
+        <div id="sort-controls">
+          <button class="pixel-btn ghost" data-sk="left" aria-label="left">◀</button>
+          <button class="pixel-btn ghost" data-sk="rot" aria-label="rotate">↻</button>
+          <button class="pixel-btn ghost" data-sk="right" aria-label="right">▶</button>
+          <button class="pixel-btn alt" data-sk="drop" aria-label="drop">▼</button>
+        </div>
+        <p class="msg" id="sort-msg" data-en="Link 3+ same docs to POP them!">같은 서류 3개 이상을 붙이면 터진다!</p>
+        <div class="menu"><button class="pixel-btn ghost" data-back data-en="◀ Menu">◀ 메뉴로</button></div>
+      </div>
+
+      <div id="screen-diff" class="hidden">
+        <div class="bar"><span id="diff-info">STAGE 1</span><span id="diff-timer">42</span></div>
+        <canvas id="diff-canvas" width="480" height="520"></canvas>
+        <p class="msg" id="diff-msg" data-en="Find every difference between the top &amp; bottom illustration!">위/아래 일러스트에서 다른 곳을 모두 찾아라!</p>
+        <div class="menu">
+          <button class="pixel-btn alt" id="diff-hint" data-en="Hint (3)">힌트 (3)</button>
+          <button class="pixel-btn ghost" data-back data-en="◀ Menu">◀ 메뉴로</button>
+        </div>
+      </div>
+
+      <div id="screen-quiz" class="hidden">
+        <div class="bar"><span id="quiz-info">1 / 8</span><span id="quiz-score">점수 0</span></div>
+        <p class="q-text" id="quiz-q"></p>
+        <div class="quiz-choices" id="quiz-choices"></div>
+        <p class="msg" id="quiz-msg"></p>
+        <div class="menu"><button class="pixel-btn ghost" data-back data-en="◀ Menu">◀ 메뉴로</button></div>
+      </div>
+    </div>
+
+    <script src="../../shared/i18n.js" defer></script>
+    <script src="../../shared/retro.js" defer></script>
+    <script src="img/hotspots.js" defer></script>
+    <script src="game.js" defer></script>
+  </body>
+</html>

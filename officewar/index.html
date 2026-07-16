@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title id="doc-title">오피스 워 — 직장인의 하루</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+KR:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <a id="arcade-back-link" href="../index.html" style="position:fixed;top:8px;left:8px;z-index:9999;font-family:monospace;font-size:11px;padding:7px 9px;background:#10131f;color:#43d9e6;text-decoration:none;border:2px solid #2f3a5c;box-shadow:0 3px 0 #000">◀ 오락실</a>
+  <div id="wrap">
+    <div id="stage" class="stage">
+      <canvas id="game" width="720" height="960" tabindex="0" aria-label="게임 화면"></canvas>
+      <div id="touch-controls" class="hidden" aria-hidden="true">
+        <div id="stick-area" class="stick-area">
+          <div class="stick-base" id="stick-base">
+            <div class="stick-knob" id="stick-knob"></div>
+          </div>
+          <span class="stick-hint" id="touch-hint-move">이동</span>
+        </div>
+        <div class="touch-actions">
+          <button type="button" class="touch-btn touch-fire" id="touch-fire">발사</button>
+          <button type="button" class="touch-btn touch-bomb" id="touch-bomb">봄</button>
+        </div>
+      </div>
+      <div id="hud">
+        <div class="hud-row">
+          <span id="hud-phase">09:00 출근</span>
+          <span id="hud-score">SCORE 0</span>
+        </div>
+        <div class="hud-row subtle">
+          <span id="hud-lives">LIFE ●●●</span>
+          <span id="hud-bomb">BOMB ×2</span>
+        </div>
+      </div>
+    </div>
+    <div id="overlay" class="hidden">
+      <div id="panel-menu" class="panel">
+        <h1 id="ui-title">오피스 워</h1>
+        <p class="tagline" id="ui-tagline">09:00 출근 → 21:00 야근 · 12 스테이지 슈팅</p>
+        <p class="pick-label" id="ui-pick-lang">언어</p>
+        <div class="gender-row" id="ui-lang-group" role="group" aria-label="언어">
+          <button type="button" class="gender-btn" id="btn-lang-ko" aria-pressed="true">한국어</button>
+          <button type="button" class="gender-btn" id="btn-lang-en" aria-pressed="false">English</button>
+        </div>
+        <p class="pick-label" id="ui-pick-char">캐릭터</p>
+        <div class="gender-row" id="ui-gender-group" role="group" aria-label="직원 성별">
+          <button type="button" class="gender-btn" id="btn-male" aria-pressed="false">남성 직원</button>
+          <button type="button" class="gender-btn" id="btn-female" aria-pressed="false">여성 직원</button>
+        </div>
+        <p class="keys" id="ui-keys">PC: 방향키 / WASD 이동 · Z·Space 발사(길게 눌러 연사) · X 봄 · Shift 저속 · ESC 정지<br />모바일: 왼쪽 스틱 이동 · 오른쪽 발사/봄</p>
+        <button id="btn-start" type="button" disabled>출근하기</button>
+        <p class="hint" id="ui-hint">먼저 캐릭터를 고른 뒤 출근하세요.</p>
+      </div>
+      <div id="panel-results" class="panel panel-results hidden" aria-live="polite">
+        <h2 class="results-title" id="results-headline"></h2>
+        <p class="results-score-line"><span id="results-score-label"></span> <strong id="results-score-value"></strong></p>
+        <p class="pick-label" id="results-kills-caption"></p>
+        <div class="results-table-wrap">
+          <table class="results-table">
+            <tbody id="results-kills-body"></tbody>
+          </table>
+        </div>
+        <div class="results-actions">
+          <button type="button" class="gender-btn" id="btn-results-home"></button>
+          <button type="button" class="gender-btn" id="btn-results-retry"></button>
+        </div>
+      </div>
+    </div>
+    <div id="toast" class="hidden"></div>
+  </div>
+  <script src="js/i18n.js" defer></script>
+  <script src="js/assets.js" defer></script>
+  <script src="js/game.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

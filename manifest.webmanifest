@@ -1,0 +1,18 @@
+{
+  "name": "오피스 워 오락실",
+  "short_name": "오피스워",
+  "description": "직장인 오피스 생활을 소재로 한 6-in-1 레트로 픽셀 아케이드",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#05060a",
+  "theme_color": "#05060a",
+  "icons": [
+    {
+      "src": "shared/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

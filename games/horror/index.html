@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#000000" />
+    <title data-en="Overtime Horror">야근: 13층 · Overtime Horror</title>
+    <link rel="stylesheet" href="../../shared/retro.css" />
+    <style>
+      body {
+        background: #000;
+      }
+      #app {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 52px 8px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      canvas {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        display: block;
+        background: #000;
+        border: 4px solid #0c0c10;
+      }
+      .hud {
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        justify-content: space-between;
+        font-family: "Press Start 2P", monospace;
+        font-size: 10px;
+        color: #6a1414;
+        margin: 6px 2px;
+      }
+      #controls {
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 12px;
+        gap: 10px;
+      }
+      #controls .move {
+        display: flex;
+        gap: 8px;
+      }
+      #controls .pixel-btn {
+        width: 84px;
+        height: 60px;
+        font-size: 16px;
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.94);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 40;
+        padding: 20px;
+      }
+      .overlay .pixel-panel {
+        max-width: 420px;
+        text-align: center;
+        background: #0a0a0c;
+        border-color: #1a0505;
+        box-shadow: inset 0 0 0 4px #300;
+      }
+      .overlay h2 {
+        font-family: "Press Start 2P", monospace;
+        color: #b81c1c;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .overlay p {
+        font-size: 13px;
+        line-height: 1.8;
+        color: #9a9aa5;
+      }
+      .hint {
+        font-size: 11px;
+        color: #4a4a55;
+        margin-top: 8px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="crt">
+    <a class="pixel-btn ghost arcade-back" href="../../index.html" data-en="◀ ARCADE">◀ 오락실</a>
+    <div id="app">
+      <div class="hud">
+        <span id="hud-loc">13F · 03:00</span>
+        <span id="hud-sanity">이성 ████████</span>
+        <span id="hud-light">🔦 ██████</span>
+      </div>
+      <div class="hud" style="justify-content: center; color: #8fd6ff; font-size: 9px; margin-top: 0">
+        <span id="hud-obj"></span>
+      </div>
+      <canvas id="game" width="300" height="200"></canvas>
+      <div id="controls">
+        <div class="move">
+          <button class="pixel-btn ghost" data-dir="left">◀</button>
+          <button class="pixel-btn ghost" data-dir="right">▶</button>
+        </div>
+        <button class="pixel-btn alt" id="btn-act" data-en="Check / Hide / Run">확인 / 숨기 / 뛰기</button>
+      </div>
+      <p class="hint" data-en="◀ ▶ move · [Check] to grab items, answer the phone, or hide in a locker · collect what each door needs · when it chases, RUN right">◀ ▶ 이동 · [확인]으로 줍기·전화받기·사물함에 숨기 · 문이 요구하는 물건을 찾아라 · 쫓기면 오른쪽으로 뛰어!</p>
+    </div>
+
+    <div class="overlay" id="intro">
+      <div class="pixel-panel">
+        <h2 data-en="OVERTIME: 13F">야근: 13층</h2>
+        <p id="intro-text"></p>
+        <button class="pixel-btn" id="btn-start" style="margin-top: 14px" data-en="Turn on the light">불을 켠다</button>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="ending">
+      <div class="pixel-panel">
+        <h2 id="end-title"></h2>
+        <p id="end-body"></p>
+        <button class="pixel-btn" id="btn-retry" style="margin-top: 14px" data-en="Live it again">다시 겪는다</button>
+        <a class="pixel-btn ghost" href="../../index.html" style="margin-top: 10px; display: inline-block; text-decoration: none" data-en="Run away (arcade)">도망친다(오락실)</a>
+      </div>
+    </div>
+
+    <script src="../../shared/i18n.js" defer></script>
+    <script src="../../shared/retro.js" defer></script>
+    <script src="game.js" defer></script>
+  </body>
+</html>

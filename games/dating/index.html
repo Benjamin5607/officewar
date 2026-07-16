@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#160414" />
+    <title data-en="Office Love Story">신입사원 이야기 · Office Love Story</title>
+    <link rel="stylesheet" href="../../shared/retro.css" />
+    <style>
+      body {
+        background: #120410;
+      }
+      #app {
+        max-width: 460px;
+        margin: 0 auto;
+        padding: 50px 10px 20px;
+      }
+      .vn {
+        border: 4px solid #000;
+        box-shadow: inset 0 0 0 4px #4a1030;
+        background: #1a0714;
+        overflow: hidden;
+      }
+      .scene {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 3 / 3.1;
+        background: #0a0208 center/cover no-repeat;
+        image-rendering: pixelated;
+      }
+      .scene .badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        font-family: "Press Start 2P", monospace;
+        font-size: 9px;
+        background: #000a;
+        color: var(--cyan);
+        padding: 5px 7px;
+      }
+      .dialog {
+        background: #0b0410;
+        border-top: 4px solid #4a1030;
+        padding: 12px 12px 14px;
+        min-height: 128px;
+      }
+      .who {
+        font-family: "Press Start 2P", monospace;
+        font-size: 11px;
+        color: var(--magenta);
+        margin-bottom: 8px;
+      }
+      .line {
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--ink);
+        min-height: 46px;
+      }
+      .choices {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .choices .pixel-btn {
+        text-align: left;
+        font-size: 11px;
+        background: #241033;
+        color: var(--ink);
+        box-shadow: 0 4px 0 #000, inset 0 0 0 2px #6a2a7a;
+      }
+      .choices .pixel-btn:hover {
+        background: #35164a;
+      }
+      .stats {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 14px;
+        font-size: 11px;
+        color: var(--ink-dim);
+      }
+      .stats .st {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+      }
+      .meter {
+        flex: 1;
+        height: 8px;
+        background: #000;
+        border: 1px solid #3a2440;
+      }
+      .meter i {
+        display: block;
+        height: 100%;
+        background: var(--cyan);
+      }
+      .meter.aff i {
+        background: var(--magenta);
+      }
+      .meter.hp i {
+        background: var(--green);
+      }
+      .week {
+        text-align: center;
+        font-family: "Press Start 2P", monospace;
+        font-size: 11px;
+        color: var(--amber);
+        margin: 10px 0;
+      }
+      h1 {
+        font-family: "Press Start 2P", monospace;
+        font-size: 15px;
+        color: var(--magenta);
+        text-align: center;
+        line-height: 1.5;
+      }
+      .gender-pick {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .gender-pick .card {
+        cursor: pointer;
+        border: 3px solid #3a2440;
+        background: #1a0714;
+        padding: 8px;
+        text-align: center;
+      }
+      .gender-pick .card img {
+        width: 100%;
+        aspect-ratio: 3/4;
+        object-fit: cover;
+        image-rendering: pixelated;
+        border: 2px solid #000;
+      }
+      .gender-pick .card:hover {
+        border-color: var(--magenta);
+      }
+      .gender-pick .card div {
+        font-family: "Press Start 2P", monospace;
+        font-size: 10px;
+        color: var(--amber);
+        margin-top: 8px;
+      }
+      .center {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="crt">
+    <a class="pixel-btn ghost arcade-back" href="../../index.html" data-en="◀ ARCADE">◀ 오락실</a>
+    <div id="app">
+      <!-- gender / start -->
+      <div id="screen-start">
+        <h1 data-en="Rookie's Story<br /><span style=&quot;font-size: 9px; color: var(--cyan)&quot;>OFFICE LOVE STORY</span>">신입사원 이야기<br /><span style="font-size: 9px; color: var(--cyan)">OFFICE LOVE STORY</span></h1>
+        <p class="center" style="font-size: 13px; line-height: 1.7; color: var(--ink-dim)" data-en="Your first 12 weeks. Amid overtime, dinners, and a rival's arrival —<br />career, love… and one dramatic final choice.">
+          입사 첫 12주. 야근·회식·라이벌의 등장 속에서<br />커리어도, 사랑도… 그리고 극적인 마지막 선택까지.
+        </p>
+        <p class="center" style="font-size: 12px; color: var(--amber)" data-en="Choose your protagonist">주인공을 선택하세요</p>
+        <div class="gender-pick">
+          <div class="card" data-gender="m">
+            <img src="img/dating_hero_m.png" alt="남자 신입사원" />
+            <div data-en="Minsu Kim (M)">김민수 (남)</div>
+          </div>
+          <div class="card" data-gender="f">
+            <img src="img/dating_hero_f.png" alt="여자 신입사원" />
+            <div data-en="Jiyeon Lee (F)">이지연 (여)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- main VN -->
+      <div id="screen-play" class="hidden">
+        <div class="week" id="week-label">1주차 / 8</div>
+        <div class="vn">
+          <div class="scene" id="scene"><span class="badge" id="scene-badge"></span></div>
+          <div class="dialog">
+            <div class="who" id="who"></div>
+            <div class="line" id="line"></div>
+            <div class="choices" id="choices"></div>
+          </div>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+    </div>
+
+    <script src="../../shared/i18n.js" defer></script>
+    <script src="../../shared/retro.js" defer></script>
+    <script src="game.js" defer></script>
+  </body>
+</html>

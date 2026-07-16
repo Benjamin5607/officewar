@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#0c0406" />
+    <title data-en="Office Fighter">직장인 대전 · Office Fighter</title>
+    <link rel="stylesheet" href="../../shared/retro.css" />
+    <style>
+      body {
+        background: #0c0406;
+      }
+      #app {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 48px 8px 14px;
+      }
+      h1 {
+        font-family: "Press Start 2P", monospace;
+        font-size: 16px;
+        color: var(--red);
+        text-align: center;
+      }
+      /* select */
+      .roster {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .fighter-card {
+        cursor: pointer;
+        border: 3px solid var(--border);
+        background: #150708;
+        padding: 6px;
+        text-align: center;
+      }
+      .fighter-card canvas,
+      .fighter-card img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 3/4;
+        object-fit: contain;
+        object-position: bottom;
+        display: block;
+        image-rendering: pixelated;
+        background: radial-gradient(120% 90% at 50% 30%, #3a1e2a 0%, #150708 70%);
+        border: 2px solid #000;
+      }
+      .fighter-card .nm {
+        font-family: "Press Start 2P", monospace;
+        font-size: 9px;
+        color: var(--amber);
+        margin-top: 6px;
+      }
+      .fighter-card .tr {
+        font-size: 10px;
+        color: var(--ink-dim);
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .fighter-card:hover,
+      .fighter-card.sel {
+        border-color: var(--red);
+        background: #24090b;
+      }
+      .movelist {
+        margin-top: 6px;
+        font-size: 10px;
+        color: var(--cyan);
+        line-height: 1.5;
+      }
+      /* battle */
+      #battle canvas {
+        width: 100%;
+        max-width: 700px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        image-rendering: pixelated;
+        border: 4px solid #000;
+      }
+      .bars {
+        max-width: 700px;
+        margin: 0 auto 6px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .side {
+        flex: 1;
+      }
+      .side.r {
+        text-align: right;
+      }
+      .nametag {
+        font-family: "Press Start 2P", monospace;
+        font-size: 9px;
+        color: var(--ink);
+        margin-bottom: 3px;
+      }
+      .hpbar {
+        height: 14px;
+        background: #300;
+        border: 2px solid #000;
+        overflow: hidden;
+      }
+      .hpbar i {
+        display: block;
+        height: 100%;
+        background: linear-gradient(#ffdd55, #ff8a1e);
+        transition: width 0.12s linear;
+        margin-left: auto;
+      }
+      .side:not(.r) .hpbar i {
+        margin-left: 0;
+        margin-right: auto;
+      }
+      .mp {
+        height: 6px;
+        margin-top: 3px;
+        background: #013;
+        border: 1px solid #000;
+      }
+      .mp i {
+        display: block;
+        height: 100%;
+        background: var(--cyan);
+      }
+      .round-dots {
+        font-family: "Press Start 2P", monospace;
+        font-size: 10px;
+        color: var(--amber);
+        padding: 0 4px;
+      }
+      #controls {
+        max-width: 700px;
+        margin: 12px auto 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .pad {
+        display: flex;
+        gap: 6px;
+      }
+      .pad .pixel-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 18px;
+      }
+      .btns {
+        display: grid;
+        grid-template-columns: repeat(2, 60px);
+        gap: 6px;
+      }
+      .btns .pixel-btn {
+        height: 44px;
+        font-size: 11px;
+        padding: 0;
+      }
+      .btns .sp {
+        grid-column: 1 / 3;
+        height: 40px;
+        background: var(--magenta);
+        box-shadow: 0 4px 0 #7a2a5a, inset 0 0 0 2px #fff6;
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(6, 3, 4, 0.92);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 40;
+        padding: 20px;
+      }
+      .overlay .pixel-panel {
+        max-width: 380px;
+        text-align: center;
+      }
+      .overlay h2 {
+        font-family: "Press Start 2P", monospace;
+        color: var(--amber);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .hint {
+        text-align: center;
+        font-size: 11px;
+        color: var(--ink-dim);
+        margin-top: 8px;
+      }
+      /* VS screen */
+      #vs .vs-wrap {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: 6px;
+        max-width: 620px;
+        width: 100%;
+      }
+      #vs .vs-fighter {
+        flex: 1;
+        text-align: center;
+        max-width: 240px;
+      }
+      #vs .vs-fighter img {
+        width: 100%;
+        aspect-ratio: 3/4;
+        object-fit: contain;
+        object-position: bottom;
+        image-rendering: pixelated;
+        background: radial-gradient(120% 90% at 50% 30%, #3a1e2a 0%, #0a0304 70%);
+        border: 4px solid #000;
+        box-shadow: inset 0 0 0 3px var(--border);
+      }
+      #vs .vs-fighter.r img {
+        box-shadow: inset 0 0 0 3px var(--red);
+      }
+      #vs .vs-name {
+        font-family: "Press Start 2P", monospace;
+        font-size: 12px;
+        color: var(--amber);
+        margin-top: 8px;
+      }
+      #vs .vs-quote {
+        font-size: 12px;
+        color: var(--ink-dim);
+        margin-top: 6px;
+        line-height: 1.5;
+        min-height: 34px;
+      }
+      #vs .vs-mid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+      }
+      #vs .vs-big {
+        font-family: "Press Start 2P", monospace;
+        font-size: 30px;
+        color: var(--red);
+        text-shadow: 0 4px 0 #000;
+        animation: vspulse 0.6s steps(2) infinite;
+      }
+      #vs .vs-stage {
+        font-family: "Press Start 2P", monospace;
+        font-size: 9px;
+        color: var(--cyan);
+        margin-top: 10px;
+        text-align: center;
+      }
+      @keyframes vspulse {
+        50% {
+          transform: scale(1.12);
+        }
+      }
+      #vs #vs-go {
+        margin-top: 18px;
+        font-size: 16px;
+        padding: 14px 28px;
+      }
+      .overlay .pixel-panel img.end-portrait {
+        width: 120px;
+        aspect-ratio: 3/4;
+        object-fit: contain;
+        object-position: bottom;
+        image-rendering: pixelated;
+        background: radial-gradient(120% 90% at 50% 30%, #3a1e2a 0%, #0a0304 70%);
+        border: 3px solid #000;
+        margin: 0 auto 10px;
+        display: block;
+      }
+      #ladder-hud {
+        max-width: 700px;
+        margin: 4px auto 0;
+        text-align: center;
+        font-family: "Press Start 2P", monospace;
+        font-size: 9px;
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body class="crt">
+    <a class="pixel-btn ghost arcade-back" href="../../index.html" data-en="◀ ARCADE">◀ 오락실</a>
+    <div id="app">
+      <div id="select">
+        <h1 data-en="OFFICE FIGHTER">직장인 대전</h1>
+        <p class="hint" data-en="10 office fighters. Arcade mode — climb the 5-match ladder and see your character's ending!">10인의 오피스 파이터. 아케이드 모드 — 5연전 사다리를 뚫고 캐릭터 엔딩을 봐라!</p>
+        <div class="roster" id="roster"></div>
+      </div>
+
+      <div id="battle" class="hidden">
+        <div class="bars">
+          <div class="side">
+            <div class="nametag" id="p1-name">P1</div>
+            <div class="hpbar"><i id="p1-hp"></i></div>
+            <div class="mp"><i id="p1-mp"></i></div>
+          </div>
+          <div class="round-dots" id="round-dots">R1</div>
+          <div class="side r">
+            <div class="nametag" id="p2-name">CPU</div>
+            <div class="hpbar"><i id="p2-hp"></i></div>
+            <div class="mp"><i id="p2-mp"></i></div>
+          </div>
+        </div>
+        <canvas id="game" width="360" height="200"></canvas>
+        <div id="ladder-hud"></div>
+        <div id="controls">
+          <div class="pad">
+            <button class="pixel-btn ghost" data-k="left">◀</button>
+            <button class="pixel-btn ghost" data-k="up">▲</button>
+            <button class="pixel-btn ghost" data-k="right">▶</button>
+          </div>
+          <div class="btns">
+            <button class="pixel-btn" data-k="light" data-en="JAB">잽</button>
+            <button class="pixel-btn alt" data-k="heavy" data-en="HEAVY">강타</button>
+            <button class="pixel-btn ghost" data-k="block" data-en="GUARD">가드</button>
+            <button class="pixel-btn" data-k="special" id="btn-sp" style="background: var(--ink-dim)" data-en="SP">필살</button>
+          </div>
+        </div>
+        <p class="hint" data-en="PC: ←→ move · ↑ jump · J jab · K heavy · L guard · U special (meter MAX)">PC: ←→ 이동 · ↑ 점프 · J 잽 · K 강타 · L 가드 · U 필살기(게이지 MAX)</p>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="vs">
+      <div>
+        <div class="vs-wrap">
+          <div class="vs-fighter">
+            <img id="vs-p1-img" alt="P1" />
+            <div class="vs-name" id="vs-p1-name"></div>
+            <div class="vs-quote" id="vs-p1-quote"></div>
+          </div>
+          <div class="vs-mid">
+            <div class="vs-big">VS</div>
+            <div class="vs-stage" id="vs-stage"></div>
+          </div>
+          <div class="vs-fighter r">
+            <img id="vs-p2-img" alt="P2" />
+            <div class="vs-name" id="vs-p2-name"></div>
+            <div class="vs-quote" id="vs-p2-quote"></div>
+          </div>
+        </div>
+        <div style="text-align: center"><button class="pixel-btn" id="vs-go">FIGHT!</button></div>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="result">
+      <div class="pixel-panel">
+        <img id="result-portrait" class="end-portrait hidden" alt="" />
+        <h2 id="result-title"></h2>
+        <p id="result-body" style="font-size: 13px; line-height: 1.7; color: var(--ink-dim)"></p>
+        <button class="pixel-btn" id="result-primary" style="margin-top: 12px"></button>
+        <button class="pixel-btn ghost" id="result-secondary" style="margin-top: 10px"></button>
+      </div>
+    </div>
+
+    <script src="../../shared/i18n.js" defer></script>
+    <script src="../../shared/retro.js" defer></script>
+    <script src="roster.js" defer></script>
+    <script src="game.js" defer></script>
+  </body>
+</html>

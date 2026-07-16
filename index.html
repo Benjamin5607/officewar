@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#05060a" />
+    <title data-en="OFFICE WAR ARCADE">오피스 워 오락실 · OFFICE WAR ARCADE</title>
+    <link rel="stylesheet" href="shared/retro.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <style>
+      #hub {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px 16px 64px;
+      }
+      .marquee {
+        text-align: center;
+        margin: 18px 0 8px;
+      }
+      .marquee h1 {
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(18px, 6vw, 40px);
+        margin: 0;
+        letter-spacing: 2px;
+        color: var(--amber);
+        text-shadow: 0 4px 0 #a5701a, 0 8px 0 #000;
+        line-height: 1.3;
+      }
+      .marquee .sub {
+        color: var(--cyan);
+        font-size: clamp(8px, 2.6vw, 12px);
+        margin-top: 12px;
+        font-family: "Press Start 2P", monospace;
+      }
+      .coin {
+        text-align: center;
+        color: var(--green);
+        font-size: 11px;
+        margin: 14px 0 22px;
+        font-family: "Press Start 2P", monospace;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .cab {
+        text-decoration: none;
+        color: var(--ink);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .cab canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        background: #000;
+        border: 3px solid var(--border);
+      }
+      .cab .name {
+        font-family: "Press Start 2P", monospace;
+        font-size: 12px;
+        color: var(--amber);
+      }
+      .cab .en {
+        font-size: 10px;
+        color: var(--ink-dim);
+        font-family: "Press Start 2P", monospace;
+      }
+      .cab .desc {
+        font-size: 12px;
+        color: var(--ink-dim);
+        line-height: 1.5;
+      }
+      .cab:hover .name {
+        color: #fff;
+      }
+      .cab:hover canvas {
+        border-color: var(--amber);
+      }
+      .tag {
+        display: inline-block;
+        font-family: "Press Start 2P", monospace;
+        font-size: 8px;
+        padding: 3px 5px;
+        background: var(--magenta);
+        color: #000;
+        align-self: flex-start;
+      }
+      footer {
+        text-align: center;
+        color: var(--ink-dim);
+        font-size: 11px;
+        margin-top: 40px;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body class="crt">
+    <div id="hub">
+      <div class="marquee">
+        <h1>OFFICE WAR</h1>
+        <div class="sub" data-en="★ OFFICE WORKER ARCADE ★">★ 직 장 인 오 락 실 · ARCADE ★</div>
+      </div>
+      <p class="coin title-blink" data-en="▶ INSERT COIN · SELECT A GAME">▶ INSERT COIN · 게임을 선택하세요</p>
+      <div class="grid" id="grid"></div>
+      <footer data-en="OFFICE WAR ARCADE v1 — 6 games, one miserable workday.<br />HTML5 Canvas · Pixel graphics · Sound ON (tap to enable)">
+        OFFICE WAR ARCADE v1 — 6 games, one miserable workday.<br />
+        HTML5 Canvas · 픽셀 그래픽 · 사운드 ON (탭하면 소리)
+      </footer>
+    </div>
+    <script src="shared/i18n.js" defer></script>
+    <script src="shared/retro.js" defer></script>
+    <script src="shared/hub.js" defer></script>
+  </body>
+</html>

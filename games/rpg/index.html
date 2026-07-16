@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#05060a" />
+    <title data-en="Office Dungeon">오피스 던전 · Office Dungeon</title>
+    <link rel="stylesheet" href="../../shared/retro.css" />
+    <style>
+      #app {
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 52px 10px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      canvas {
+        width: 100%;
+        max-width: 480px;
+        height: auto;
+        display: block;
+        background: #0a0704;
+        border: 4px solid #000;
+        box-shadow: inset 0 0 0 4px var(--border);
+        image-rendering: pixelated;
+      }
+      .hud {
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        justify-content: space-between;
+        font-family: "Press Start 2P", monospace;
+        font-size: 10px;
+        color: var(--amber);
+        margin: 6px 2px;
+      }
+      #controls {
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 14px;
+        gap: 12px;
+      }
+      .dpad {
+        display: grid;
+        grid-template-columns: repeat(3, 52px);
+        grid-template-rows: repeat(3, 52px);
+        gap: 4px;
+      }
+      .dpad button {
+        font-size: 18px;
+        padding: 0;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .act .pixel-btn {
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .dpad .sp {
+        visibility: hidden;
+      }
+      .act {
+        display: flex;
+        gap: 10px;
+      }
+      .act .pixel-btn {
+        width: 74px;
+        height: 74px;
+        border-radius: 50%;
+        font-size: 11px;
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 6, 10, 0.92);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 40;
+        padding: 20px;
+      }
+      .overlay .pixel-panel {
+        max-width: 380px;
+        text-align: center;
+      }
+      .overlay h2 {
+        font-family: "Press Start 2P", monospace;
+        color: var(--amber);
+        font-size: 16px;
+      }
+      .overlay p {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--ink-dim);
+      }
+      .hint {
+        font-size: 11px;
+        color: var(--ink-dim);
+        margin-top: 8px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="crt">
+    <a class="pixel-btn ghost arcade-back" href="../../index.html" data-en="◀ ARCADE">◀ 오락실</a>
+    <div id="app">
+      <div class="hud">
+        <span id="hud-room">B1 로비</span>
+        <span id="hud-hp">HP ●●●●●</span>
+        <span id="hud-lv">LV 1</span>
+      </div>
+      <canvas id="game" width="240" height="240"></canvas>
+      <div id="controls">
+        <div class="dpad">
+          <span class="sp"></span>
+          <button class="pixel-btn ghost" data-dir="up">▲</button>
+          <span class="sp"></span>
+          <button class="pixel-btn ghost" data-dir="left">◀</button>
+          <span class="sp"></span>
+          <button class="pixel-btn ghost" data-dir="right">▶</button>
+          <span class="sp"></span>
+          <button class="pixel-btn ghost" data-dir="down">▼</button>
+          <span class="sp"></span>
+        </div>
+        <div class="act">
+          <button class="pixel-btn" id="btn-atk" data-en="ATK">공격</button>
+        </div>
+      </div>
+      <p class="hint" data-en="PC: Arrows/WASD move · Space/J attack · Coffee (☕) heals HP">PC: 방향키/WASD 이동 · Space/J 공격 · 커피(☕)로 HP 회복</p>
+    </div>
+
+    <div class="overlay" id="intro">
+      <div class="pixel-panel">
+        <h2 data-en="OFFICE DUNGEON">오피스 던전</h2>
+        <p data-en="During overtime, the elevator plunged into the basement.<br />This is a dungeon crawling with <b>tasks that became monsters</b>.<br /><br />Grab your stapler-sword, fight floor by floor, and defeat the <b>final boss, Manager Kim</b>!">
+          야근 중 엘리베이터가 지하로 추락했다.<br />여긴… <b>몬스터가 된 업무들</b>이 우글대는 던전.<br /><br />
+          스테이플러 검을 들고 층층이 뚫고 올라가<br /><b>최종 보스 김부장</b>을 쓰러뜨려라!
+        </p>
+        <button class="pixel-btn" id="btn-start" style="margin-top: 14px" data-en="Start adventure">모험 시작</button>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="cutscene">
+      <div class="pixel-panel">
+        <h2 id="cut-title" style="font-size: 14px; color: var(--cyan)"></h2>
+        <p id="cut-body" style="min-height: 96px"></p>
+        <button class="pixel-btn" id="cut-go" style="margin-top: 8px" data-en="Enter ▶">들어간다 ▶</button>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="result">
+      <div class="pixel-panel">
+        <h2 id="result-title"></h2>
+        <p id="result-body"></p>
+        <button class="pixel-btn" id="btn-retry" style="margin-top: 14px" data-en="Try again">다시 도전</button>
+        <a class="pixel-btn ghost" href="../../index.html" style="margin-top: 10px; display: inline-block; text-decoration: none" data-en="To arcade">오락실로</a>
+      </div>
+    </div>
+
+    <script src="../../shared/i18n.js" defer></script>
+    <script src="../../shared/retro.js" defer></script>
+    <script src="game.js" defer></script>
+  </body>
+</html>
